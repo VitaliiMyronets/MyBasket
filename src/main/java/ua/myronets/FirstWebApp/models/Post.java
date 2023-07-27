@@ -53,4 +53,13 @@ public class Post {
     public void setViews(int views) {
         this.views = views;
     }
+
+    public Post() {
+    }
+
+    public Post(String title, String anons, String fullText) {
+        this.title = title;
+        this.anons = anons;
+        this.fullText = fullText;
+    }
 }
