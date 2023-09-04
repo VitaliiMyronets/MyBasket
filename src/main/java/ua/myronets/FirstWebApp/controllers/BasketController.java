@@ -18,4 +18,9 @@ public class BasketController {
         model.addAttribute("baskets", baskets);
         return "myBaskets";
     }
+
+    @GetMapping("/mybaskets/add")
+    public String myBasketsAdd(Model model){
+        return "myBasketsAdd";
+    }
 }

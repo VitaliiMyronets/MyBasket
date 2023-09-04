@@ -8,7 +8,8 @@
 <body>
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5">
-    <h1>Блог сайта</h1>
+    <h1>Блог</h1>
+    <a th:href="'/blog/add'" class="btn btn-success">Добавить статью</a>
     <div th:each="el : ${posts}" class="alert alert-info my-2">
         <h3 th:text="${el.title}"/>
         <p th:text="${el.anons}"/>
