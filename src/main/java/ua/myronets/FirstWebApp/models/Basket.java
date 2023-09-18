@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+
 @Entity
 public class Basket {
     @Id
@@ -19,6 +20,8 @@ public class Basket {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 
     public String getBasketName() {
         return basketName;
@@ -41,6 +44,14 @@ public class Basket {
     }
 
     public void setCreator(String creator) {
+        this.creator = creator;
+    }
+    public Basket() {
+    }
+
+    public Basket(String basketName, String description, String creator) {
+        this.basketName = basketName;
+        this.description = description;
         this.creator = creator;
     }
 }

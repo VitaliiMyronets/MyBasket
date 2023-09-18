@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.myronets.FirstWebApp.models.Basket;
 import ua.myronets.FirstWebApp.repo.BasketRepository;
 
@@ -23,4 +25,12 @@ public class BasketController {
     public String myBasketsAdd(Model model){
         return "myBasketsAdd";
     }
+
+    @PostMapping("/mybaskets/add")
+    public String myBasketPostAdd(@RequestParam String basketName,@RequestParam String description,@RequestParam String creator){
+        Basket basket = new Basket(basketName, description, creator);
+        basketRepository.save(basket);
+        return "redirect:/mybaskets";
+    }
 }
+
