@@ -15,7 +15,7 @@
     <p th:text="${el.creator}"/>
     <a th:href="'/mybaskets/' + ${el.id} + '/edit'" class="btn btn-warning">Редагувати</a><br><br>
     <form th:action="'/mybaskets/' + ${el.id} + '/remove'" method="post">
-      <button class="btn btn-warning" tipe="submit">Видалити</button>
+      <button class="btn btn-warning" type="submit">Видалити</button>
     </form>
 
   </div>

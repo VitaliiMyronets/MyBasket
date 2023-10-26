@@ -5,10 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Post {
     @Id
@@ -17,7 +18,6 @@ public class Post {
 
     private String title, anons, fullText;
     private int views;
-
 
     public Post(String title, String anons, String fullText) {
         this.title = title;
