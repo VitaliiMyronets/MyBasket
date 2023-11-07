@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.myronets.FirstWebApp.models.Basket;
-import ua.myronets.FirstWebApp.models.Post;
 import ua.myronets.FirstWebApp.repo.BasketRepository;
 
 import java.util.ArrayList;
@@ -49,6 +48,28 @@ public class BasketController {
         baskets.ifPresent(res::add);
         model.addAttribute("baskets", res);
         return "myBasketsDetails";
+    }
+
+    @GetMapping("/mybaskets/{id}/edit")
+    public String basketEdit(@PathVariable(value = "id") long id, Model model){
+        if(!basketRepository.existsById(id)){
+            return "redirect:/mybaskets";
+        }
+        Optional<Basket> basket = basketRepository.findById(id);
+        ArrayList<Basket> res = new ArrayList<>();
+        basket.ifPresent(res::add);
+        model.addAttribute("basket", res);
+        return "myBasketsEdit";
+    }
+    @PostMapping("/mybaskets/{id}/edit")
+    public String myBasketUpdate(@PathVariable(value = "id") long id, @RequestParam String basketName,@RequestParam String description,@RequestParam String creator, Model model){
+        Basket basket = basketRepository.findById(id).orElseThrow();
+        basket.setBasketName(basketName);
+        basket.setDescription(description);
+        basket.setCreator(creator);
+        basketRepository.save(basket);
+
+        return "redirect:/mybaskets";
     }
 
 }
