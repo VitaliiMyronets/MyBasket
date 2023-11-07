@@ -47,7 +47,7 @@ public class BasketController {
         Optional<Basket> baskets = basketRepository.findById(id);
         ArrayList<Basket> res = new ArrayList<>();
         baskets.ifPresent(res::add);
-        model.addAttribute("baskets", baskets);
+        model.addAttribute("baskets", res);
         return "myBasketsDetails";
     }
 
