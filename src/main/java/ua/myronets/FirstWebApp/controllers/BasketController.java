@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.myronets.FirstWebApp.models.Basket;
+import ua.myronets.FirstWebApp.models.Post;
 import ua.myronets.FirstWebApp.repo.BasketRepository;
 
 import java.util.ArrayList;
@@ -68,6 +69,14 @@ public class BasketController {
         basket.setDescription(description);
         basket.setCreator(creator);
         basketRepository.save(basket);
+
+        return "redirect:/mybaskets";
+    }
+
+    @PostMapping("/mybaskets/{id}/remove")
+    public String myBasketDelete(@PathVariable(value = "id") long id, Model model){
+        Basket basket = basketRepository.findById(id).orElseThrow();
+        basketRepository.delete(basket);
 
         return "redirect:/mybaskets";
     }
