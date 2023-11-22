@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.myronets.FirstWebApp.models.Basket;
-import ua.myronets.FirstWebApp.models.Post;
 import ua.myronets.FirstWebApp.repo.BasketRepository;
 
 import java.util.ArrayList;

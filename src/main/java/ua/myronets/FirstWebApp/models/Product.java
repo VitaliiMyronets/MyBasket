@@ -14,9 +14,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    String nameOfProduct, unit;
-    float quantity;
+    private String nameOfProduct, unit;
+    private float quantity;
 
     public Product(String nameOfProduct, String unit, float quantity) {
         this.nameOfProduct = nameOfProduct;

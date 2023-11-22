@@ -17,7 +17,6 @@ public class Post {
     private Long id;
 
     private String title, anons, fullText;
-    private int views;
 
     public Post(String title, String anons, String fullText) {
         this.title = title;

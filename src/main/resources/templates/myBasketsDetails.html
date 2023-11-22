@@ -17,7 +17,31 @@
     <form th:action="'/mybaskets/' + ${el.id} + '/remove'" method="post">
       <button class="btn btn-warning" type="submit">Видалити</button>
     </form>
-
+  </div>
+  <div th:switch="${products}" class="alert alert-info my-2">
+    <h2 th:case="null">Ви ще не додали жодного продукту?!? Зробіть це прямо зараз!!!</h2>
+    <div th:case="*">
+      <h2>Ваші продукти:</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>Назва</th>
+          <th>Одиниця виміру</th>
+          <th>Кількість</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el : ${products}">
+          <td th:text="${product.nameOfProduct}"></td>
+          <td th:text="${product.unit}"></td>
+          <td th:text="${product.quantity}"></td>
+          <td><a th:href="@{product-update/{id}(id=${product.id})}">Змінити</a></td>
+          <td><a th:href="@{product-delete/{id}(id=${product.id})}">Видалити</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><a href="/product-add">Додати продукт</a></p>
   </div>
 </div>
 <div th:insert="blocks/footer :: footer"></div>
