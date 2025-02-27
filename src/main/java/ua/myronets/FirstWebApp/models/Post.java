@@ -4,7 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 public class Post {
     @Id
@@ -12,50 +17,6 @@ public class Post {
     private Long id;
 
     private String title, anons, fullText;
-    private int views;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAnons() {
-        return anons;
-    }
-
-    public void setAnons(String anons) {
-        this.anons = anons;
-    }
-
-    public String getFullText() {
-        return fullText;
-    }
-
-    public void setFullText(String fullText) {
-        this.fullText = fullText;
-    }
-
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
-
-    public Post() {
-    }
 
     public Post(String title, String anons, String fullText) {
         this.title = title;
