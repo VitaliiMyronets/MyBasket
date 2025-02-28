@@ -11,6 +11,6 @@ public class FirstWebAppApplication {
 		SpringApplication.run(FirstWebAppApplication.class, args);
 	}
 
-	Warehouse warehouse = new Warehouse();
+
 
 }
