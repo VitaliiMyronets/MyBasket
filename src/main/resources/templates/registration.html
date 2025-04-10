@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <title>Реєстрація</title>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5 d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+    <form action="/registration" method="post" class="centered-form" th:object="${user}">
+        <h2 class="text-center mb-4">Реєстрація</h2>
+
+        <div class="mb-2">
+            <label for="username" class="form-label">Email:</label>
+            <input th:field="*{username}" type="text" name="username" placeholder="Email" class="form-control" id="username">
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-2">
+            <label for="firstname" class="form-label">Ім'я:</label>
+            <input th:field="*{firstName}" type="text" name="firstname" placeholder="Ім'я" class="form-control" id="firstname">
+            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-2">
+            <label for="lastname" class="form-label">Прізвище:</label>
+            <input th:field="*{lastName}" type="text" name="lastname" placeholder="Прізвище" class="form-control" id="lastname">
+            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-2">
+            <label for="password" class="form-label">Пароль:</label>
+            <input th:field="*{password}" type="password" name="password" placeholder="Пароль" class="form-control" id="password">
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-2">
+            <label for="confirmPassword" class="form-label">Перевірка пароля:</label>
+            <input th:field="*{confirmPassword}" type="password" name="confirmPassword" placeholder="Перевірка пароля" class="form-control" id="confirmPassword">
+            <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="text-danger"></div>
+        </div>
+
+        <div th:if="${passwordMismatch}" class="alert alert-danger mt-3" th:text="${passwordMismatch}"></div>
+        <div th:if="${registrationError}" class="alert alert-danger mt-3" th:text="${registrationError}"></div>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Поїхали</button>
+        </div>
+    </form>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>

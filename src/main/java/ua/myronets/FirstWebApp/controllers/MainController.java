@@ -21,7 +21,7 @@ public class MainController {
     }
 
     @GetMapping("/myprofile")
-    public String myprofile(Model model) {
+    public String myProfile(Model model) {
         model.addAttribute("title", "Мій профіль");
         return "myprofile";
     }
