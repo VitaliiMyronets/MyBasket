@@ -5,11 +5,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-@Value
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
     @NotBlank(message = "Це поле обов'язкове для заповнення")
     @Email(message = "Не вірний формат пошти")

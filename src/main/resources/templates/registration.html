@@ -9,7 +9,7 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5 d-flex justify-content-center align-items-center" style="min-height: 50vh;">
-    <form action="/registration" method="post" class="centered-form" th:object="${user}">
+    <form th:action="@{/registration}" method="post" class="centered-form" th:object="${user}">
         <h2 class="text-center mb-4">Реєстрація</h2>
 
         <div class="mb-2">

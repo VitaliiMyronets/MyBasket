@@ -20,11 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void registerUser(UserRegistrationDto request) {
+    public User registerUser(UserRegistrationDto request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new IllegalArgumentException("Паролі не співпадають");
         }
@@ -33,13 +33,14 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Користувач з таким email вже існує");
         }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setRole(Role.USER);
-        userRepository.save(user);
+        User newUser = new User();
+        newUser.setUsername(request.getUsername());
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setRole(Role.USER);
+
+        return userRepository.save(newUser);
     }
 
     public User findUserById(Long id) {
