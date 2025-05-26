@@ -5,7 +5,11 @@
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/home">Головна</a>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/blog">Блог</a>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/about">Про нас</a>
-            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/logout">Вийти</a>
-        </nav>
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+                <button type="submit" class="btn btn-link me-3 py-2 link-body-emphasis text-decoration-none">Вийти</button>
+            </form></nav>
     </div>
 </div>
