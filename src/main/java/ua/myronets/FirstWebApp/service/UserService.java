@@ -1,7 +1,6 @@
 package ua.myronets.FirstWebApp.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +14,7 @@ import ua.myronets.FirstWebApp.repo.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,12 +43,12 @@ public class UserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
-    public User findUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 
 
-    public List<User> findAllUser() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
