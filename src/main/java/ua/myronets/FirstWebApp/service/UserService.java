@@ -73,4 +73,8 @@ public class UserService implements UserDetailsService {
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Користувач з ім'ям: " + username + " не знайден, пройдіть, будь ласка, реєстрацію"));
     }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

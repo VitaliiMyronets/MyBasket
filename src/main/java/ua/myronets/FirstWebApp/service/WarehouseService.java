@@ -46,4 +46,7 @@ public class WarehouseService {
         warehouseRepository.deleteById(id);
     }
 
+    public Warehouse saveWarehouse(Warehouse warehouse) {
+        return warehouseRepository.save(warehouse);
+    }
 }

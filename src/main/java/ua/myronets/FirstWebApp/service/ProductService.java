@@ -19,7 +19,7 @@ public class ProductService {
     @Autowired
     private final ProductRepository productRepository;
 
-    public Product createNewProduct (Product product) {
+    public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
