@@ -2,6 +2,9 @@
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <h5 class="my-0 mr-md-auto font-weight-normal">MyBasket</h5>
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <span th:if="${username}" class="me-3 py-2 link-body-emphasis text-decoration-none">
+                Ви війшли в профіль <b th:text="${username}">невідомий коритувач</b>!
+            </span>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/home">Головна</a>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/blog">Блог</a>
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/about">Про нас</a>
@@ -10,6 +13,7 @@
                        th:name="${_csrf.parameterName}"
                        th:value="${_csrf.token}">
                 <button type="submit" class="btn btn-link me-3 py-2 link-body-emphasis text-decoration-none">Вийти</button>
-            </form></nav>
+            </form>
+        </nav>
     </div>
 </div>

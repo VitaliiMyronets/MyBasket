@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated())
                 /*.httpBasic(Customizer.withDefaults())*/
                 .formLogin(login -> login.loginPage("/login")
-                        .defaultSuccessUrl("/home")
+                        .defaultSuccessUrl("/home",true)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
