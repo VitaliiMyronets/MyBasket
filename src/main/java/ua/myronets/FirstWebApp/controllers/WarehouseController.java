@@ -23,8 +23,6 @@ public class WarehouseController {
     private final WarehouseService warehouseService;
     private final UserService userService;
 
-
-
     @PostMapping("/warehouse/add")
     public String addWarehouse(@ModelAttribute Warehouse newWarehouse,
                                Principal principal) {
@@ -47,7 +45,56 @@ public class WarehouseController {
         if (warehouse.isPresent()) {
             if (principal != null && warehouse.get().getUser().getUsername().equals(principal.getName())) {
                 model.addAttribute("warehouse", warehouse.get());
-                return "warehouse-details";
+                model.addAttribute("title", "Деталі складу: " + warehouse.get().getName());
+                return "warehouse";
+            }
+        }
+        return "redirect:/home";
+    }
+
+
+    @GetMapping("/warehouse/{id}/edit")
+    public String showEditWarehouseForm(@PathVariable Long id, Model model, Principal principal) {
+        Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(id);
+
+        if (warehouseOptional.isPresent()) {
+            Warehouse warehouse = warehouseOptional.get();
+            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
+                model.addAttribute("warehouse", warehouse);
+                model.addAttribute("title", "Редагувати склад: " + warehouse.getName());
+                return "edit-warehouse";
+            }
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/warehouse/{id}/edit")
+    public String updateWarehouse(@PathVariable Long id,
+                                  @ModelAttribute Warehouse updatedWarehouse,
+                                  Principal principal) {
+        Optional<Warehouse> existingWarehouseOptional = warehouseService.findWarehouseById(id);
+
+        if (existingWarehouseOptional.isPresent()) {
+            Warehouse existingWarehouse = existingWarehouseOptional.get();
+            if (principal != null && existingWarehouse.getUser().getUsername().equals(principal.getName())) {
+                existingWarehouse.setName(updatedWarehouse.getName());
+                existingWarehouse.setDescription(updatedWarehouse.getDescription());
+                warehouseService.saveWarehouse(existingWarehouse);
+                return "redirect:/warehouse/" + id;
+            }
+        }
+        return "redirect:/home";
+    }
+
+
+    @PostMapping("/warehouse/{id}/delete")
+    public String deleteWarehouse(@PathVariable Long id, Principal principal) {
+        Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(id);
+
+        if (warehouseOptional.isPresent()) {
+            Warehouse warehouse = warehouseOptional.get();
+            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
+                warehouseService.deleteWarehouse(id);
             }
         }
         return "redirect:/home";

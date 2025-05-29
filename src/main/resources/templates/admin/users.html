@@ -7,10 +7,41 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<main>
 
+<main class="container mt-4">
+    <h2 th:text="${title}"></h2>
 
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Логін (Email)</th>
+            <th>Ім'я</th>
+            <th>Прізвище</th>
+            <th>Роль</th>
+            <th>Дії</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.role}"></td>
+            <td>
+                <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-info btn-sm me-2">Деталі</a>
+                <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-warning btn-sm me-2">Редагувати</a>
+                <form th:action="@{/users/{id}/delete(id=${user.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/home" class="btn btn-secondary mt-3">Назад до головної</a>
 </main>
+
 <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

@@ -7,9 +7,41 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<p th:text="'Створіть свій кошик з продуктами, та контролюйте їхню кількість зі своєю сім\'єю!'" />
+<p th:text="'Створіть свій кошик з продуктами, та контролюйте їхню кількість!'" />
 <main>
+    <div class="container mt-4">
+        <h2>Мої Склади</h2>
+        <div th:if="${warehouses.isEmpty()}">
+            <p>У вас ще немає складів. Додайте перший!</p>
+        </div>
+        <div th:unless="${warehouses.isEmpty()}">
+            <ul class="list-group">
+                <li th:each="warehouse : ${warehouses}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <a th:href="@{/warehouse/{id}(id=${warehouse.id})}" th:text="${warehouse.name}">Назва Складу</a>
+                    <div>
+                        <a th:href="@{/warehouse/{id}/edit(id=${warehouse.id})}" class="btn btn-warning btn-sm me-2">Редагувати</a>
+                        <form th:action="@{/warehouse/{id}/delete(id=${warehouse.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                        </form>
+                        <a th:href="@{/warehouse/{id}/products(id=${warehouse.id})}" class="btn btn-info btn-sm ms-2">Переглянути продукти</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
+        <h3 class="mt-4">Додати новий склад</h3>
+        <form th:action="@{/warehouse/add}" th:object="${newWarehouse}" method="post" class="mt-3">
+            <div class="mb-3">
+                <label for="warehouseName" class="form-label">Назва складу:</label>
+                <input type="text" id="warehouseName" th:field="*{name}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="warehouseDescription" class="form-label">Опис:</label>
+                <textarea id="warehouseDescription" th:field="*{description}" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Додати склад</button>
+        </form>
+    </div>
 
 </main>
 <div th:insert="blocks/footer :: footer"></div>
