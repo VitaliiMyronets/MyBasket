@@ -8,6 +8,7 @@ import ua.myronets.FirstWebApp.models.Product;
 import ua.myronets.FirstWebApp.models.Warehouse;
 import ua.myronets.FirstWebApp.repo.ProductRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,5 +44,13 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public List<Product> findProductByWarehouse(Optional<Warehouse> warehouseOptional) {
+        if (warehouseOptional.isPresent()) {
+            Warehouse warehouse = warehouseOptional.get();
+            return productRepository.findByWarehouse(warehouse);
+        }
+        return Collections.emptyList();
     }
 }

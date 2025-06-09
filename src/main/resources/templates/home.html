@@ -23,7 +23,7 @@
                         <form th:action="@{/warehouse/{id}/delete(id=${warehouse.id})}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
                         </form>
-                        <a th:href="@{/warehouse/{id}/products(id=${warehouse.id})}" class="btn btn-info btn-sm ms-2">Переглянути продукти</a>
+                        <a th:href="@{/warehouse/{id}/products(id=${warehouse.id})}" class="btn btn-info btn-sm ms-2">Перейти до складу</a>
                     </div>
                 </li>
             </ul>

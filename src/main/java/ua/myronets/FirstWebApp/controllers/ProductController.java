@@ -44,22 +44,7 @@ public class ProductController {
         return "redirect:/home";
     }
 
-    @PostMapping("/warehouse/{warehouseId}/products/add")
-    public String addProductToWarehouse(@PathVariable Long warehouseId,
-                                        @ModelAttribute Product newProduct,
-                                        Principal principal) {
-        Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(warehouseId);
 
-        if (warehouseOptional.isPresent()) {
-            Warehouse warehouse = warehouseOptional.get();
-            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
-                newProduct.setWarehouse(warehouse);
-                productService.saveProduct(newProduct);
-                return "redirect:/warehouse/" + warehouseId + "/products";
-            }
-        }
-        return "redirect:/home";
-    }
 
     @GetMapping("/product/{id}/edit")
     public String showEditProductForm(@PathVariable Long id, Model model, Principal principal) {

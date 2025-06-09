@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.security.Principal;
 
+import ua.myronets.FirstWebApp.models.Product;
 import ua.myronets.FirstWebApp.models.User;
 import ua.myronets.FirstWebApp.models.Warehouse;
+import ua.myronets.FirstWebApp.service.ProductService;
 import ua.myronets.FirstWebApp.service.UserService;
 import ua.myronets.FirstWebApp.service.WarehouseService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +25,7 @@ public class WarehouseController {
 
     private final WarehouseService warehouseService;
     private final UserService userService;
+    private final ProductService productService;
 
     @PostMapping("/warehouse/add")
     public String addWarehouse(@ModelAttribute Warehouse newWarehouse,
@@ -46,6 +50,11 @@ public class WarehouseController {
             if (principal != null && warehouse.get().getUser().getUsername().equals(principal.getName())) {
                 model.addAttribute("warehouse", warehouse.get());
                 model.addAttribute("title", "Деталі складу: " + warehouse.get().getName());
+
+                List<Product> products = productService.findProductByWarehouse(warehouse);
+                model.addAttribute("products", products);
+                model.addAttribute("newProduct", new Product());
+
                 return "warehouse";
             }
         }
@@ -95,6 +104,23 @@ public class WarehouseController {
             Warehouse warehouse = warehouseOptional.get();
             if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
                 warehouseService.deleteWarehouse(id);
+            }
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/warehouse/{warehouseId}/products/add")
+    public String addProductToWarehouse(@PathVariable Long warehouseId,
+                                        @ModelAttribute Product newProduct,
+                                        Principal principal) {
+        Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(warehouseId);
+
+        if (warehouseOptional.isPresent()) {
+            Warehouse warehouse = warehouseOptional.get();
+            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
+                newProduct.setWarehouse(warehouse);
+                productService.saveProduct(newProduct);
+                return "redirect:/warehouse/" + warehouseId + "/products";
             }
         }
         return "redirect:/home";
