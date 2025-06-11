@@ -30,7 +30,6 @@ public class RegistrationFormController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        // Створюємо новий, порожній об'єкт UserRegistrationDto
         model.addAttribute("user", new UserRegistrationDto());
         return "/registration";
     }
@@ -47,21 +46,18 @@ public class RegistrationFormController {
         }
 
         try {
-            User registeredUser = userService.registerUser(user); // Метод регистрации должен возвращать созданного пользователя
-
-            // Автоматическая аутентификация пользователя
+            User registeredUser = userService.registerUser(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     registeredUser.getUsername(),
-                    user.getPassword() // Используйте введенный пароль (до хеширования)
+                    user.getPassword()
             );
             Authentication authenticatedUser = authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 
-            // Создание сессии
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-
             return "redirect:/home";
+
         } catch (IllegalArgumentException e) {
             model.addAttribute("registrationError", e.getMessage());
             return "/registration";

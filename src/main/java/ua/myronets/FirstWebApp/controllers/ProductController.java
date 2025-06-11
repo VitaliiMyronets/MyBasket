@@ -3,10 +3,8 @@ package ua.myronets.FirstWebApp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 
 import ua.myronets.FirstWebApp.models.Product;
@@ -93,5 +91,44 @@ public class ProductController {
             }
         }
         return "redirect:/home";
+    }
+
+    @PostMapping("/product/{productId}/change-quantity")
+    public String changeProductQuantity(
+            @PathVariable Long productId,
+            @RequestParam("action") String action,
+            Principal principal) {
+
+        Optional<Product> productOptional = productService.findProductById(productId);
+
+        if (productOptional.isEmpty()) {
+            // Можливо, обробити помилку або просто перенаправити на головну
+            return "redirect:/home";
+        }
+
+        Product product = productOptional.get();
+
+        // Перевірка прав доступу: чи належить продукт складу, який належить поточному користувачу
+        if (principal == null || !product.getWarehouse().getUser().getUsername().equals(principal.getName())) {
+            return "redirect:/home"; // Доступ заборонено
+        }
+
+        int currentNumber = product.getNumber();
+        int newNumber = currentNumber;
+
+        if ("increment".equals(action)) {
+            newNumber++;
+        } else if ("decrement".equals(action)) {
+            newNumber--;
+        }
+
+        if (newNumber < 0) {
+            newNumber = 0;
+        }
+
+        product.setNumber(newNumber);
+        productService.saveProduct(product);
+
+        return "redirect:/warehouse/" + product.getWarehouse().getId();
     }
 }

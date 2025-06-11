@@ -31,8 +31,15 @@
                     <h5 th:text="${product.name}">Назва продукту</h5>
                     <p>Об'єм: <span th:text="${product.volume}">0.0</span>, Кількість: <span th:text="${product.number}">0</span></p>
                 </div>
-                <div>
-                    <a th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-warning btn-sm me-2">Редагувати</a>
+                <div class="d-flex align-items-center">
+                    <form th:action="@{/product/{productId}/change-quantity(productId=${product.id}, action='decrement')}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm me-1">-</button>
+                    </form>
+                    <form th:action="@{/product/{productId}/change-quantity(productId=${product.id}, action='increment')}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm ms-1">+</button>
+                    </form>
+
+                    <a th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-warning btn-sm ms-3 me-2">Редагувати</a>
                     <form th:action="@{/product/{id}/delete(id=${product.id})}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
                     </form>
