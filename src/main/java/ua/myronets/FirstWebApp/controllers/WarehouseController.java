@@ -1,6 +1,7 @@
 package ua.myronets.FirstWebApp.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,56 +28,57 @@ public class WarehouseController {
     private final UserService userService;
     private final ProductService productService;
 
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @PostMapping("/warehouse/add")
     public String addWarehouse(@ModelAttribute Warehouse newWarehouse,
                                Principal principal) {
-        if (principal != null) {
-            String username = principal.getName();
-            Optional<User> currentUser = userService.findByUsername(username);
-            if (currentUser.isPresent()) {
-                newWarehouse.setUser(currentUser.get());
-                warehouseService.saveWarehouse(newWarehouse);
-            }
+
+        String username = principal.getName();
+        Optional<User> currentUser = userService.findByUsername(username);
+        if (currentUser.isPresent()) {
+            newWarehouse.setUser(currentUser.get());
+            warehouseService.saveWarehouse(newWarehouse);
         }
+
         return "redirect:/home";
     }
 
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @GetMapping("/warehouse/{id}")
     public String showWarehouseDetails(@PathVariable Long id, Model model,
                                        Principal principal) {
         Optional<Warehouse> warehouse = warehouseService.findWarehouseById(id);
 
         if (warehouse.isPresent()) {
-            if (principal != null && warehouse.get().getUser().getUsername().equals(principal.getName())) {
-                model.addAttribute("warehouse", warehouse.get());
-                model.addAttribute("title", "Деталі складу: " + warehouse.get().getName());
+            model.addAttribute("warehouse", warehouse.get());
+            model.addAttribute("title", "Деталі складу: " + warehouse.get().getName());
 
-                List<Product> products = productService.findProductByWarehouse(warehouse);
-                model.addAttribute("products", products);
-                model.addAttribute("newProduct", new Product());
+            List<Product> products = productService.findProductByWarehouse(warehouse);
+            model.addAttribute("products", products);
+            model.addAttribute("newProduct", new Product());
 
-                return "warehouse";
-            }
+            return "warehouse";
         }
         return "redirect:/home";
     }
 
-
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @GetMapping("/warehouse/{id}/edit")
     public String showEditWarehouseForm(@PathVariable Long id, Model model, Principal principal) {
         Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(id);
 
         if (warehouseOptional.isPresent()) {
             Warehouse warehouse = warehouseOptional.get();
-            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
-                model.addAttribute("warehouse", warehouse);
-                model.addAttribute("title", "Редагувати склад: " + warehouse.getName());
-                return "edit-warehouse";
-            }
+
+            model.addAttribute("warehouse", warehouse);
+            model.addAttribute("title", "Редагувати склад: " + warehouse.getName());
+            return "edit-warehouse";
+
         }
         return "redirect:/home";
     }
 
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @PostMapping("/warehouse/{id}/edit")
     public String updateWarehouse(@PathVariable Long id,
                                   @ModelAttribute Warehouse updatedWarehouse,
@@ -85,30 +87,28 @@ public class WarehouseController {
 
         if (existingWarehouseOptional.isPresent()) {
             Warehouse existingWarehouse = existingWarehouseOptional.get();
-            if (principal != null && existingWarehouse.getUser().getUsername().equals(principal.getName())) {
-                existingWarehouse.setName(updatedWarehouse.getName());
-                existingWarehouse.setDescription(updatedWarehouse.getDescription());
-                warehouseService.saveWarehouse(existingWarehouse);
-                return "redirect:/warehouse/" + id;
-            }
+            existingWarehouse.setName(updatedWarehouse.getName());
+            existingWarehouse.setDescription(updatedWarehouse.getDescription());
+            warehouseService.saveWarehouse(existingWarehouse);
+            return "redirect:/warehouse/" + id;
+
         }
         return "redirect:/home";
     }
 
-
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @PostMapping("/warehouse/{id}/delete")
     public String deleteWarehouse(@PathVariable Long id, Principal principal) {
         Optional<Warehouse> warehouseOptional = warehouseService.findWarehouseById(id);
 
         if (warehouseOptional.isPresent()) {
             Warehouse warehouse = warehouseOptional.get();
-            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
-                warehouseService.deleteWarehouse(id);
-            }
+            warehouseService.deleteWarehouse(id);
         }
         return "redirect:/home";
     }
 
+    @PreAuthorize("@warehouseSecurity.isOwner(#id, authentication.name)")
     @PostMapping("/warehouse/{warehouseId}/products/add")
     public String addProductToWarehouse(@PathVariable Long warehouseId,
                                         @ModelAttribute Product newProduct,
@@ -117,11 +117,10 @@ public class WarehouseController {
 
         if (warehouseOptional.isPresent()) {
             Warehouse warehouse = warehouseOptional.get();
-            if (principal != null && warehouse.getUser().getUsername().equals(principal.getName())) {
-                newProduct.setWarehouse(warehouse);
-                productService.saveProduct(newProduct);
-                return "redirect:/warehouse/" + warehouseId + "/products";
-            }
+            newProduct.setWarehouse(warehouse);
+            productService.saveProduct(newProduct);
+            return "redirect:/warehouse/" + warehouseId + "/products";
+
         }
         return "redirect:/home";
     }
